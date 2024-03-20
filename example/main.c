@@ -3,6 +3,7 @@
 
 #include "../scomlib_extra/scomlib_extra.h"
 #include "serial.h"
+#include <unistd.h> // Include the header file for usleep
 
 static void hex_dump(const void *inmem, size_t len)
 {
@@ -53,70 +54,59 @@ int test()
     char readbuf[128];
     float outval = 0.0;
 
-    encresult = scomx_encode_read_user_info_value(SCOMX_DEST_XTM(0), SCOMX_INFO_XTENDER_OUT_AC_POWER);
+    encresult = scomx_encode_read_user_info_value(SCOMX_DEST_XTM(3), SCOMX_INFO_XTENDER_OUT_AC_POWER);
 
-    printf("WRITING FRAME:\n");
-    hex_dump(encresult.data, encresult.length);
     bytecounter = serial_write(encresult.data, encresult.length);
     if (bytecounter != encresult.length) {
-        printf("Wrote only %u bytes from %u\n", bytecounter, encresult.length);
         return 10;
     }
 
-    printf("READING HEAD:\n");
     bytecounter = serial_read(readbuf, SCOM_FRAME_HEADER_SIZE);
     if (bytecounter != SCOM_FRAME_HEADER_SIZE) {
-        printf("Read only %u bytes from %u (header)\n", bytecounter, SCOM_FRAME_HEADER_SIZE);
         return 1;
     }
-    hex_dump(readbuf, SCOM_FRAME_HEADER_SIZE);
 
     dechdr = scomx_decode_frame_header(readbuf, SCOM_FRAME_HEADER_SIZE);
     if (dechdr.error != SCOM_ERROR_NO_ERROR) {
-        printf("Error decoding frame header: %s\n", scomx_err2str(dechdr.error));
         return 2;
     }
 
-    printf("READING BODY:\n");
     bytecounter = serial_read(readbuf, dechdr.length_to_read);
     if (bytecounter != dechdr.length_to_read) {
-        printf("Read only %u bytes from %u (body)\n", bytecounter, dechdr.length_to_read);
         return 3;
     }
-    hex_dump(readbuf, dechdr.length_to_read);
 
     decres = scomx_decode_frame(readbuf, dechdr.length_to_read);
     if (decres.error != SCOM_ERROR_NO_ERROR) {
-        printf("Error decoding frame body: %s\n", scomx_err2str(decres.error));
         return 4;
     }
 
     outval = scomx_result_float(decres);
 
-    printf("SRC ADDR: %u, SVC ID %u, OBJ TYPE %u, OBJ ID %u, PROP ID %u, VALUE %.3f\n", decres.src_addr, decres.service_id, decres.object_type, decres.object_id,
-           decres.property_id, outval);
+    printf("XTENDER_OUT_AC_POWER: %.3f\n", outval);
 
     return 0;
 }
 
 int main(int argc, const char *argv[])
 {
-    const char *port = "/dev/ttyUSB0";
+    const char *port = "/dev/serial/by-path/platform-xhci-hcd.1.auto-usb-0:1.1.1:1.0-port0";
 
     if (argc > 1) {
         port = argv[1];
     }
 
     printf("Studer serial comm test on port %s\n", port);
-    if (serial_init(port, B38400, PARITY_EVEN, 1) != 0) {
+    if (serial_init(port, B115200, PARITY_EVEN, 1) != 0) {
         return 1;
     }
-
-    for (unsigned i = 0; i < 3; i++) {
-        printf("=> attempt %u:\n", i);
+    while (1) {
         int r = test();
         if (r != 0) {
-            printf("=== RET CODE %d\n", r);
+            printf("Test failed with error code %d\n", r);
         }
+        usleep(500000); // sleep for 500 milliseconds
     }
+
+    return 0;
 }
