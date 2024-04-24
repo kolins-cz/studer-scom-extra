@@ -1,10 +1,9 @@
-#include <stdio.h>
-#include <termios.h> // for baud rate constant
+#include "main.h"
 #include "../scomlib_extra/scomlib_extra.h"
 #include "serial.h"
-#include "main.h"
-#include <unistd.h> // Include the header file for usleep
-
+#include <stdio.h>
+#include <termios.h> // for baud rate constant
+#include <unistd.h>  // Include the header file for usleep
 
 // Function to read a parameter from a device at a specific address
 read_param_result_t read_param(int addr, int parameter)
@@ -19,6 +18,14 @@ read_param_result_t read_param(int addr, int parameter)
 
     // Encode the read user info value command
     encresult = scomx_encode_read_user_info_value(addr, parameter);
+
+    /*
+    // Debug Print encresult in HEX form
+    for (size_t i = 0; i < encresult.length; i++) {
+        printf("%02X", encresult.data[i]);
+    }
+    printf("\n");
+    */
 
     // Write the encoded command to the serial port
     bytecounter = serial_write(encresult.data, encresult.length);
@@ -67,7 +74,6 @@ int main(int argc, const char *argv[])
     // default serial port if no argument provided
     const char *port = "/dev/serial/by-path/platform-xhci-hcd.1.auto-usb-0:1.1.1:1.0-port0";
 
-
     // Check if a port is provided as a command line argument
     if (argc > 1) {
         port = argv[1];
@@ -81,13 +87,32 @@ int main(int argc, const char *argv[])
     }
 
     while (1) {
+        /*
         // Read parameters for addresses 100 to 104
-        for (int addr = 100; addr <= 105; addr++) {
+        for (int addr = 100; addr < 105; addr++) {
             read_param_result_t result = read_param(addr, 3136);
             if (result.error == 0) {
                 printf("xtender %d output power = %.3f kW\n", addr, -result.value);
             } else {
                 printf("xtender %d output power = read failed\n", addr);
+            }
+        }
+        */
+        // Iterate over the requested_parameters array
+        for (int i = 0; i < sizeof(requested_parameters) / sizeof(parameter_t); i++) {
+            // Get the current parameter
+            parameter_t current_param = requested_parameters[i];
+
+            // Read the parameter
+            read_param_result_t result = read_param(current_param.address, current_param.parameter);
+
+            // Check if the read was successful
+            if (result.error == 0) {
+                // Print the parameter name and value
+                printf("%s = %.3f %s\n", current_param.name, result.value * current_param.sign, current_param.unit);
+            } else {
+                // Print an error message
+                printf("%s = read failed\n", current_param.name);
             }
         }
 
