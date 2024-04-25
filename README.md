@@ -4,8 +4,8 @@ This program connects to a Studer XCom-232i device, retrieves data, and publishe
 
 ### Usage
 - Look at main.h and feel free to add or remove parameters you would like to retrieve.
-- Compile with `make` and you can optinally install a systemd service with  `./install-service.sh`
-- `homeassistant.yaml` and `lovelace.yaml` provided to simplify addind this to Homeassistant 
+- Compile with `make` and you can optionally install a systemd service with `./install-service.sh`
+- `homeassistant.yaml` and `lovelace.yaml` are provided to simplify adding this to Home Assistant.
 
 ### Contributing
 
