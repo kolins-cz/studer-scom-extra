@@ -1,21 +1,19 @@
 # Studer232-to-MQTT
 
-This program connects to a Studer XCom-232i device, retrieves data, and publishes it to an MQTT broker.
+This program connects to a Studer XCom-232i device, retrieves data, and publishes them to an MQTT broker.
 
 ### Usage
 
-Compile and run. Can be installed as a systemd service.
+To use this program, you need to compile and run it. It can also be installed as a systemd service.
 
 ### Contributing
 
-Feel free to submit pull requests to improve the code.
+If you would like to contribute to the code, feel free to submit pull requests to improve it.
 
 ### Reference
 
-Based on https://github.com/k3a/studer library
+This program is based on the [k3a/studer](https://github.com/k3a/studer) library.
 
-The latest scom library and protocol spec can be downloaded
-from [Software and Updates](https://www.studer-innotec.com/en/downloads/variotrack-series/) section.
+You can download the latest scom library and protocol specification from the [Software and Updates](https://www.studer-innotec.com/en/downloads/variotrack-series/) section.
 
-Full list of object IDs can be found in "Technical specification - Xtender serial protocol appendix"
-PDF in the same zip file.
+For a full list of object IDs, refer to the "Technical specification - Xtender serial protocol appendix" PDF in the same zip file.
