@@ -3,7 +3,7 @@
 This program connects to a Studer XCom-232i device, retrieves data, and publishes them to an MQTT broker.
 
 ### Usage
-- Look at main.h and feel free to add or remove parameters you would like to retrieve.
+- Look at `main.h` set up your MQTT server and feel free to add or remove parameters you would like to retrieve.
 - Compile with `make` and you can optionally install a systemd service with `./install-service.sh`
 - `homeassistant.yaml` and `lovelace.yaml` are provided to simplify adding this to Home Assistant.
 
