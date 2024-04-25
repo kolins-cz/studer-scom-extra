@@ -145,7 +145,7 @@ mqtt:
       expire_after: 20
 
     - name: "Studer L1 Input Active Power"
-      state_topic: "studer/XT/l1_input_active_power"
+      state_topic: "studer/AC/l1_input_active_power"
       unit_of_measurement: "W"
       value_template: "{{ value | multiply(1000) }}"
       device_class: power
@@ -154,7 +154,7 @@ mqtt:
       expire_after: 20
 
     - name: "Studer L1 Input Apparent Power"
-      state_topic: "studer/XT/l1_input_apparent_power"
+      state_topic: "studer/AC/l1_input_apparent_power"
       unit_of_measurement: "VA"
       value_template: "{{ value | multiply(1000) }}"
       device_class: apparent_power
@@ -163,7 +163,7 @@ mqtt:
       expire_after: 20
 
     - name: "Studer L1 Output Active Power"
-      state_topic: "studer/XT/l1_output_active_power"
+      state_topic: "studer/AC/l1_output_active_power"
       unit_of_measurement: "W"
       value_template: "{{ value | multiply(1000) }}"
       device_class: power
@@ -172,7 +172,7 @@ mqtt:
       expire_after: 20
 
     - name: "Studer L1 Output Apparent Power"
-      state_topic: "studer/XT/l1_output_apparent_power"
+      state_topic: "studer/AC/l1_output_apparent_power"
       unit_of_measurement: "VA"
       value_template: "{{ value | multiply(1000) }}"
       device_class: apparent_power
@@ -181,7 +181,7 @@ mqtt:
       expire_after: 20
 
     - name: "Studer L2 Input Active Power"
-      state_topic: "studer/XT/l2_input_active_power"
+      state_topic: "studer/AC/l2_input_active_power"
       unit_of_measurement: "W"
       value_template: "{{ value | multiply(1000) }}"
       device_class: power
@@ -190,7 +190,7 @@ mqtt:
       expire_after: 20
 
     - name: "Studer L2 Input Apparent Power"
-      state_topic: "studer/XT/l2_input_apparent_power"
+      state_topic: "studer/AC/l2_input_apparent_power"
       unit_of_measurement: "VA"
       value_template: "{{ value | multiply(1000) }}"
       device_class: apparent_power
@@ -199,7 +199,7 @@ mqtt:
       expire_after: 20
 
     - name: "Studer L2 Output Active Power"
-      state_topic: "studer/XT/l2_output_active_power"
+      state_topic: "studer/AC/l2_output_active_power"
       unit_of_measurement: "W"
       value_template: "{{ value | multiply(1000) }}"
       device_class: power
@@ -208,7 +208,7 @@ mqtt:
       expire_after: 20
 
     - name: "Studer L2 Output Apparent Power"
-      state_topic: "studer/XT/l2_output_apparent_power"
+      state_topic: "studer/AC/l2_output_apparent_power"
       unit_of_measurement: "VA"
       value_template: "{{ value | multiply(1000) }}"
       device_class: apparent_power
@@ -217,7 +217,7 @@ mqtt:
       expire_after: 20
 
     - name: "Studer L3 Input Active Power"
-      state_topic: "studer/XT/l3_input_active_power"
+      state_topic: "studer/AC/l3_input_active_power"
       unit_of_measurement: "W"
       value_template: "{{ value | multiply(1000) }}"
       device_class: power
@@ -226,7 +226,7 @@ mqtt:
       expire_after: 20
 
     - name: "Studer L3 Input Apparent Power"
-      state_topic: "studer/XT/l3_input_apparent_power"
+      state_topic: "studer/AC/l3_input_apparent_power"
       unit_of_measurement: "VA"
       value_template: "{{ value | multiply(1000) }}"
       device_class: apparent_power
@@ -235,7 +235,7 @@ mqtt:
       expire_after: 20
 
     - name: "Studer L3 Output Active Power"
-      state_topic: "studer/XT/l3_output_active_power"
+      state_topic: "studer/AC/l3_output_active_power"
       unit_of_measurement: "W"
       value_template: "{{ value | multiply(1000) }}"
       device_class: power
@@ -244,7 +244,7 @@ mqtt:
       expire_after: 20
 
     - name: "Studer L3 Output Apparent Power"
-      state_topic: "studer/XT/l3_output_apparent_power"
+      state_topic: "studer/AC/l3_output_apparent_power"
       unit_of_measurement: "VA"
       value_template: "{{ value | multiply(1000) }}"
       device_class: apparent_power
