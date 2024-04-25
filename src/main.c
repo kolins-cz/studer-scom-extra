@@ -1,7 +1,24 @@
+/**
+ * @file main.c
+ * @brief Program to connect to Studer XCom-232, get data and push to MQTT
+ * 
+ * This program connects to a Studer XCom-232 device, retrieves data, and publishes it to an MQTT broker.
+ * 
+ * @license MIT License
+ * 
+ * @author kolin
+ * 
+ * @dependencies
+ * This program uses the following library:
+ * - [Studer Library](https://github.com/k3a/studer)
+ */
+
 #include "main.h"
 #include "../scomlib_extra/scomlib_extra.h"
 #include "serial.h"
+#include <mosquitto.h>
 #include <stdio.h>
+#include <string.h>  
 #include <termios.h> // for baud rate constant
 #include <unistd.h>  // Include the header file for usleep
 
@@ -19,13 +36,13 @@ read_param_result_t read_param(int addr, int parameter)
     // Encode the read user info value command
     encresult = scomx_encode_read_user_info_value(addr, parameter);
 
-    /*
+#ifdef DEBUG
     // Debug Print encresult in HEX form
     for (size_t i = 0; i < encresult.length; i++) {
         printf("%02X", encresult.data[i]);
     }
     printf("\n");
-    */
+#endif
 
     // Write the encoded command to the serial port
     bytecounter = serial_write(encresult.data, encresult.length);
@@ -71,7 +88,7 @@ read_param_result_t read_param(int addr, int parameter)
 
 int main(int argc, const char *argv[])
 {
-    // default serial port if no argument provided
+    // Default serial port if no argument provided
     const char *port = "/dev/serial/by-path/platform-xhci-hcd.1.auto-usb-0:1.1.1:1.0-port0";
 
     // Check if a port is provided as a command line argument
@@ -86,18 +103,15 @@ int main(int argc, const char *argv[])
         return 1;
     }
 
+    mosquitto_lib_init();
+    struct mosquitto *mqtt_client = mosquitto_new(NULL, true, NULL);
+    int rc = mosquitto_connect(mqtt_client, "net.ad.kolins.cz", 1883, 60);
+    if (rc != MOSQ_ERR_SUCCESS) {
+        printf("Connect failed, return code %d\n", rc);
+        return rc;
+    }
+
     while (1) {
-        /*
-        // Read parameters for addresses 100 to 104
-        for (int addr = 100; addr < 105; addr++) {
-            read_param_result_t result = read_param(addr, 3136);
-            if (result.error == 0) {
-                printf("xtender %d output power = %.3f kW\n", addr, -result.value);
-            } else {
-                printf("xtender %d output power = read failed\n", addr);
-            }
-        }
-        */
         // Iterate over the requested_parameters array
         for (int i = 0; i < sizeof(requested_parameters) / sizeof(parameter_t); i++) {
             // Get the current parameter
@@ -106,20 +120,46 @@ int main(int argc, const char *argv[])
             // Read the parameter
             read_param_result_t result = read_param(current_param.address, current_param.parameter);
 
+            // Current topic
+            char topic[256];
+            snprintf(topic, sizeof(topic), "%s/%s/%s", mqtt_topic, current_param.mqtt_prefix, current_param.name);
+
             // Check if the read was successful
             if (result.error == 0) {
                 // Print the parameter name and value
                 printf("%s = %.3f %s\n", current_param.name, result.value * current_param.sign, current_param.unit);
+
+                // Convert the float value to a string
+                char value_str[32];
+                snprintf(value_str, sizeof(value_str), "%.3f", result.value * current_param.sign);
+
+                // Publish the value to MQTT
+                rc = mosquitto_publish(mqtt_client, NULL, topic, strlen(value_str), value_str, 0, false);
+                if (rc != MOSQ_ERR_SUCCESS) {
+                    printf("Publish failed, return code %d\n", rc);
+                    rc = mosquitto_reconnect(mqtt_client);
+                    if (rc != MOSQ_ERR_SUCCESS) {
+                        printf("Reconnect failed, return code %d\n", rc);
+                        return rc;
+                    }
+                }
             } else {
                 // Print an error message
                 printf("%s = read failed\n", current_param.name);
+                if (mqtt_client != NULL && topic != NULL) {
+                    mosquitto_publish(mqtt_client, NULL, topic, 3, "nAn", 0, false);
+                }
             }
         }
 
         printf("---------------------------------------------------------\n");
 
-        usleep(500000); // sleep for 500 milliseconds
+        usleep(500000); // Sleep for 500 milliseconds
     }
 
+    // Cleanup for Mosquitto
+    mosquitto_disconnect(mqtt_client);
+    mosquitto_destroy(mqtt_client);
+    mosquitto_lib_cleanup();
     return 0;
 }
