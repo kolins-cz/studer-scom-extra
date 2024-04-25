@@ -69,4 +69,4 @@ const parameter_t requested_parameters[] = {
     {3005, 103, "xt3_batt_current",           "DC", "A",   1},
     {3005, 104, "xt4_batt_current",           "DC", "A",   1},
 };
-};
+

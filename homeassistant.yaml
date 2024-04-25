@@ -3,7 +3,7 @@ mqtt:
     - name: "Studer 1 Input Active Power"
       state_topic: "studer/XT/xt1_input_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -21,7 +21,7 @@ mqtt:
     - name: "Studer 1 Output Active Power"
       state_topic: "studer/XT/xt1_output_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -39,7 +39,7 @@ mqtt:
     - name: "Studer 2 Input Active Power"
       state_topic: "studer/XT/xt2_input_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -57,7 +57,7 @@ mqtt:
     - name: "Studer 2 Output Active Power"
       state_topic: "studer/XT/xt2_output_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -75,7 +75,7 @@ mqtt:
     - name: "Studer 3 Input Active Power"
       state_topic: "studer/XT/xt3_input_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -93,7 +93,7 @@ mqtt:
     - name: "Studer 3 Output Active Power"
       state_topic: "studer/XT/xt3_output_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -111,7 +111,7 @@ mqtt:
     - name: "Studer 4 Input Active Power"
       state_topic: "studer/XT/xt4_input_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -129,7 +129,7 @@ mqtt:
     - name: "Studer 4 Output Active Power"
       state_topic: "studer/XT/xt4_output_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -147,7 +147,7 @@ mqtt:
     - name: "Studer L1 Input Active Power"
       state_topic: "studer/XT/l1_input_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -165,7 +165,7 @@ mqtt:
     - name: "Studer L1 Output Active Power"
       state_topic: "studer/XT/l1_output_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -183,7 +183,7 @@ mqtt:
     - name: "Studer L2 Input Active Power"
       state_topic: "studer/XT/l2_input_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -201,7 +201,7 @@ mqtt:
     - name: "Studer L2 Output Active Power"
       state_topic: "studer/XT/l2_output_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -219,7 +219,7 @@ mqtt:
     - name: "Studer L3 Input Active Power"
       state_topic: "studer/XT/l3_input_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -237,7 +237,7 @@ mqtt:
     - name: "Studer L3 Output Active Power"
       state_topic: "studer/XT/l3_output_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -304,7 +304,7 @@ mqtt:
     - name: "Studer AC Total Input Active Power"
       state_topic: "studer/AC/total_input_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -314,6 +314,7 @@ mqtt:
       state_topic: "studer/AC/total_output_apparent_power"
       unit_of_measurement: "VA"
       value_template: "{{ value | multiply(1000) }}"
+      
       device_class: apparent_power
       state_class: measurement
       availability_topic: "studer/commstatus"
@@ -322,7 +323,7 @@ mqtt:
     - name: "Studer AC Total Output Active Power"
       state_topic: "studer/AC/total_output_active_power"
       unit_of_measurement: "W"
-      #value_template: "{{ value | multiply(1000) }}"
+      value_template: "{{ value | multiply(1000) }}"
       device_class: power
       state_class: measurement
       availability_topic: "studer/commstatus"
