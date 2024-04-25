@@ -7,8 +7,8 @@ Description=Studer232-to-MQTT Service
 After=network.target
 
 [Service]
-ExecStart=$(pwd)/
-WorkingDirectory=$(pwd)
+ExecStart=$(pwd)/bin/studer232-to-mqtt
+WorkingDirectory=$(pwd)/bin
 Restart=always
 User=${SUDO_USER}
 
