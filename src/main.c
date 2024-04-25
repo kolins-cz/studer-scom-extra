@@ -105,7 +105,7 @@ int main(int argc, const char *argv[])
 
     mosquitto_lib_init();
     struct mosquitto *mqtt_client = mosquitto_new(NULL, true, NULL);
-    int rc = mosquitto_connect(mqtt_client, "net.ad.kolins.cz", 1883, 60);
+    int rc = mosquitto_connect(mqtt_client, mqtt_server, mqtt_port, 60);
     if (rc != MOSQ_ERR_SUCCESS) {
         printf("Connect failed, return code %d\n", rc);
         return rc;

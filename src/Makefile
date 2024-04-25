@@ -6,13 +6,13 @@ OBJECTS := ../scomlib_extra/scomlib_extra.o ../scomlib_extra/scomlib_extra_error
 
 .PHONY: all clean
 
-all: scomtest
+all: studer232-to-mqtt
 
 clean:
-	rm -f $(OBJECTS) scomtest
+	rm -f $(OBJECTS) studer232-to-mqtt
 
-scomtest: $(OBJECTS)
-	$(CC) $(OBJECTS) $(LIBS) -o scomtest
+studer232-to-mqtt: $(OBJECTS)
+	$(CC) $(OBJECTS) $(LIBS) -o studer232-to-mqtt
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<

@@ -1,3 +1,6 @@
+const char *mqtt_server = "net.ad.kolins.cz";
+int mqtt_port = 1883;
+
 // Structure to hold the result of reading a parameter
 typedef struct {
     float value; // Value of the parameter
@@ -17,7 +20,6 @@ const char *mqtt_topic = "studer";
 
 // List of parameters
 // param,	addr,	name,	mqtt prefix,	unit
-
 const parameter_t requested_parameters[] = {
     {3137, 101, "xt1_input_active_power", "XT", "kW", -1},
     {3138, 101, "xt1_input_apparent_power", "XT", "kVA", -1},
