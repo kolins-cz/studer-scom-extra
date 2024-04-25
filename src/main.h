@@ -1,6 +1,8 @@
 const char *mqtt_server = "net.ad.kolins.cz";
 int mqtt_port = 1883;
 
+const char *lwt_message = "offline";
+
 // Structure to hold the result of reading a parameter
 typedef struct {
     float value; // Value of the parameter

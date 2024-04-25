@@ -1,13 +1,13 @@
 /**
  * @file main.c
  * @brief Program to connect to Studer XCom-232, get data and push to MQTT
- * 
+ *
  * This program connects to a Studer XCom-232 device, retrieves data, and publishes it to an MQTT broker.
- * 
+ *
  * @license MIT License
- * 
+ *
  * @author kolin
- * 
+ *
  * @dependencies
  * This program uses the following library:
  * - [Studer Library](https://github.com/k3a/studer)
@@ -18,7 +18,7 @@
 #include "serial.h"
 #include <mosquitto.h>
 #include <stdio.h>
-#include <string.h>  
+#include <string.h>
 #include <termios.h> // for baud rate constant
 #include <unistd.h>  // Include the header file for usleep
 
@@ -105,9 +105,25 @@ int main(int argc, const char *argv[])
 
     mosquitto_lib_init();
     struct mosquitto *mqtt_client = mosquitto_new(NULL, true, NULL);
-    int rc = mosquitto_connect(mqtt_client, mqtt_server, mqtt_port, 60);
+
+    // Set up the last will before connecting
+    int rc = mosquitto_will_set(mqtt_client, "studer/commstatus", strlen(lwt_message), lwt_message, 0, true);
+    if (rc != MOSQ_ERR_SUCCESS) {
+        printf("Setting up Last Will and Testament failed, return code %d\n", rc);
+        return rc;
+    }
+
+    rc = mosquitto_connect(mqtt_client, mqtt_server, mqtt_port, 60);
     if (rc != MOSQ_ERR_SUCCESS) {
         printf("Connect failed, return code %d\n", rc);
+        return rc;
+    }
+
+    // Publish "online" status after connecting
+    char *online_status = "online";
+    rc = mosquitto_publish(mqtt_client, NULL, "studer/commstatus", strlen(online_status), online_status, 0, true);
+    if (rc != MOSQ_ERR_SUCCESS) {
+        printf("Publish failed, return code %d\n", rc);
         return rc;
     }
 
